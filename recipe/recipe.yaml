@@ -1,0 +1,47 @@
+schema_version: 1
+
+context:
+  name: slurm-sweeps
+  version: "0.1.3"
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/slurm_sweeps-${{ version }}.tar.gz
+  sha256: d9a3c9ffb80c303b9b81e59c7f429ddfe692d16e0b4ff425a7729f14e2f9cb8a
+
+build:
+  number: 1
+  noarch: python
+  script: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+
+requirements:
+  host:
+    - python ${{ python_min }}.*
+    - setuptools
+    - pip
+  run:
+    - python >=${{ python_min }}
+    - cloudpickle
+    - numpy
+    - pandas
+    - pyyaml
+
+tests:
+  - python:
+      imports:
+        - slurm_sweeps
+      pip_check: true
+      python_version: ${{ python_min }}
+
+about:
+  summary: A simple tool to perform sweeps on SLURM clusters.
+  license: MIT
+  license_file: LICENSE
+  homepage: https://github.com/dcfidalgo/slurm_sweeps
+
+extra:
+  recipe-maintainers:
+    - jan-janssen
